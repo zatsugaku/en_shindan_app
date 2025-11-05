@@ -1,0 +1,13 @@
+{
+  "name": "en-shindan-app",
+  "version": "1.0.0",
+  "description": "縁診断Webアプリ",
+  "scripts": {
+    "import-data": "node scripts/import-data.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {},
+  "private": true
+}

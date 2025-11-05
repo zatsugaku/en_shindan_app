@@ -1,0 +1,66 @@
+{
+  "questions": {
+    "question_01": {
+      "id": "question_01",
+      "order": 1,
+      "text": "人との出会いを大切にしていますか？",
+      "options": [
+        {"label": "とてもあてはまる", "value": 5},
+        {"label": "あてはまる", "value": 4},
+        {"label": "どちらともいえない", "value": 3},
+        {"label": "あまりあてはまらない", "value": 2},
+        {"label": "まったくあてはまらない", "value": 1}
+      ]
+    },
+    "question_02": {
+      "id": "question_02",
+      "order": 2,
+      "text": "困っている人を見かけたら助けますか？",
+      "options": [
+        {"label": "とてもあてはまる", "value": 5},
+        {"label": "あてはまる", "value": 4},
+        {"label": "どちらともいえない", "value": 3},
+        {"label": "あまりあてはまらない", "value": 2},
+        {"label": "まったくあてはまらない", "value": 1}
+      ]
+    },
+    "question_03": {
+      "id": "question_03",
+      "order": 3,
+      "text": "感謝の気持ちを言葉で伝えることが多いですか？",
+      "options": [
+        {"label": "とてもあてはまる", "value": 5},
+        {"label": "あてはまる", "value": 4},
+        {"label": "どちらともいえない", "value": 3},
+        {"label": "あまりあてはまらない", "value": 2},
+        {"label": "まったくあてはまらない", "value": 1}
+      ]
+    }
+  },
+  "results": {
+    "result_excellent": {
+      "id": "result_excellent",
+      "title": "素晴らしい縁の持ち主",
+      "description": "あなたは周囲とのつながりを大切にし、自然と信頼を集めるタイプです。気配りと行動力がバランスよく、良縁が巡りやすい状態です。",
+      "scoreRange": {"min": 12, "max": 15},
+      "imageUrl": "",
+      "advice": "今の姿勢を続けつつ、新しい出会いにも心を開きましょう。時に自分を労わる時間も忘れずに。"
+    },
+    "result_good": {
+      "id": "result_good",
+      "title": "良好な縁を持つ人",
+      "description": "人との関わり方は安定しており、良い関係を築けています。ほんの少しの意識で、さらに縁を深められるでしょう。",
+      "scoreRange": {"min": 8, "max": 11},
+      "imageUrl": "",
+      "advice": "小さな感謝や声かけを積み重ねて、縁を育てましょう。"
+    },
+    "result_normal": {
+      "id": "result_normal",
+      "title": "これからの成長に期待",
+      "description": "いまは縁を育む余地が多く残されています。無理のない範囲で、相手を思いやる行動を一つずつ増やしていきましょう。",
+      "scoreRange": {"min": 3, "max": 7},
+      "imageUrl": "",
+      "advice": "まずは挨拶や感謝を言葉にし、小さな助け合いから始めてみましょう。"
+    }
+  }
+}
