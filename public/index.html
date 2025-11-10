@@ -3,10 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>縁診断アプリ</title>
+    <title>縁診断 - あなたの縁のタイプを知る</title>
+    <meta name="description" content="五行思想に基づいた縁診断。あなたの縁のタイプを診断して、より良い人間関係を築きましょう。">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="container">
+        <header class="hero">
+            <h1 class="title">縁診断</h1>
+            <p class="subtitle">あなたの「縁」のタイプを知り、<br>より豊かな人間関係を築きましょう</p>
+        </header>
+
+        <main class="content">
+            <section class="intro">
+                <h2>五行思想に基づく縁診断</h2>
+                <p>
+                    この診断では、古来より伝わる五行思想（木・火・土・金・水）をもとに、
+                    あなたがどのような「縁」を持つタイプなのかを明らかにします。
+                </p>
+                <p>
+                    4つの質問に答えるだけで、あなたの縁のタイプと、
+                    人との関わり方の特徴がわかります。
+                </p>
+            </section>
+
+            <section class="types-preview">
+                <h3>5つの縁タイプ</h3>
+                <div class="type-grid">
+                    <div class="type-card wood">
+                        <div class="type-icon">🌱</div>
+                        <h4>木縁型</h4>
+                        <p>成長の縁</p>
+                    </div>
+                    <div class="type-card fire">
+                        <div class="type-icon">🔥</div>
+                        <h4>火縁型</h4>
+                        <p>情熱の縁</p>
+                    </div>
+                    <div class="type-card earth">
+                        <div class="type-icon">🏔️</div>
+                        <h4>土縁型</h4>
+                        <p>安定の縁</p>
+                    </div>
+                    <div class="type-card metal">
+                        <div class="type-icon">⚡</div>
+                        <h4>金縁型</h4>
+                        <p>錬磨の縁</p>
+                    </div>
+                    <div class="type-card water">
+                        <div class="type-icon">💧</div>
+                        <h4>水縁型</h4>
+                        <p>流動の縁</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cta">
+                <a href="/diagnose.html" class="btn-primary">診断を始める</a>
+                <p class="note">所要時間: 約1分</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 縁診断. All rights reserved.</p>
+        </footer>
+    </div>
 </body>
 </html>
