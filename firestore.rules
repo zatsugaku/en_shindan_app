@@ -2,15 +2,26 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 診断結果の読み取りは全ユーザーに許可
-    match /diagnostic_results/{resultId} {
+    // 質問データの読み取りは全ユーザーに許可
+    match /questions/{questionId} {
       allow read: if true;
-      allow write: if false; // 管理者のみがFirebase Consoleから追加
+      allow write: if false; // 管理者のみが更新可能
+    }
+
+    // 診断結果の読み取りは全ユーザーに許可
+    match /results/{resultId} {
+      allow read: if true;
+      allow write: if false; // 管理者のみが更新可能
     }
 
     // ユーザー診断履歴（将来的に実装する場合）
     match /user_diagnostics/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // その他のコレクションはデフォルトで拒否
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

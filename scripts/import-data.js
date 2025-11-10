@@ -9,17 +9,16 @@ const admin = require('firebase-admin');
 const fs = require('fs');
 const path = require('path');
 
-// Firebase Admin初期化（ローカルエミュレーター用）
+// Firebase Admin初期化（本番Firestore使用）
+const serviceAccount = require('../en-shindan-app-firebase-adminsdk-fbsvc-b6a080048f.json');
+
 admin.initializeApp({
-  projectId: 'en-shindan-app',
+  credential: admin.credential.cert(serviceAccount),
+  projectId: 'en-shindan-app'
 });
 
 const db = admin.firestore();
-
-// エミュレーターに接続（本番環境の場合はこの行を削除）
-if (process.env.FIRESTORE_EMULATOR_HOST) {
-  console.log(`Using Firestore Emulator: ${process.env.FIRESTORE_EMULATOR_HOST}`);
-}
+console.log('🔥 本番Firestoreに接続しています...');
 
 async function importData() {
   try {
