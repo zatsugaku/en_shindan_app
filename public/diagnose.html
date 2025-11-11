@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>縁診断をはじめる</title>
+  <meta name="description" content="五行（木・火・土・金・水）に基づく縁診断。4つの質問に回答して、あなたの縁タイプをチェック。" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .content { max-width: 760px; margin: 0 auto; }
+    .section-title { font-size: 1.4rem; margin-bottom: 12px; color: var(--color-primary); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-row { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 0.95rem; color: #555; }
+    input[type="text"], input[type="date"], select { padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .note { margin-top: 4px; }
+
+    .progress-wrapper { margin: 18px 0; background: #f1f1f1; height: 10px; border-radius: 999px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.25s ease; }
+
+    .question-card { background: #fff; border-radius: 16px; box-shadow: var(--shadow); padding: 20px; }
+    .question-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .question-index { font-weight: 700; color: #666; }
+    .question-text { font-size: 1.1rem; margin: 8px 0 16px; }
+
+    .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .option-btn { padding: 12px; border: none; color: #fff; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: transform .08s ease, filter .15s ease; }
+    .option-btn:active { transform: translateY(1px); }
+    .option-btn.wood { background: var(--color-wood); }
+    .option-btn.fire { background: var(--color-fire); }
+    .option-btn.earth { background: var(--color-earth); }
+    .option-btn.metal { background: var(--color-metal); color: #111; }
+    .option-btn.water { background: var(--color-water); }
+
+    .helper { font-size: 0.9rem; color: #666; margin-top: 8px; }
+    .error { color: #c62828; margin-top: 8px; }
+
+    .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); z-index: 50; align-items: center; justify-content: center; }
+    .loading-box { background: #fff; padding: 18px 22px; border-radius: 12px; box-shadow: var(--shadow); font-weight: 600; color: #555; }
+
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .option-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" style="padding: 28px 20px; margin-bottom: 20px;">
+      <h1 class="title" style="font-size: 2rem; margin-bottom: 6px;">縁診断</h1>
+      <p class="subtitle" style="font-size: 1rem;">4つの質問に答えて、あなたの縁タイプをチェック</p>
+    </header>
+
+    <main class="content">
+      <section>
+        <h2 class="section-title">基本情報</h2>
+        <div class="form-grid" style="margin-bottom: 12px;">
+          <div class="form-row">
+            <label for="lastName">苗字</label>
+            <input id="lastName" type="text" placeholder="山田" />
+          </div>
+          <div class="form-row">
+            <label for="firstName">名前</label>
+            <input id="firstName" type="text" placeholder="太郎" />
+          </div>
+          <div class="form-row">
+            <label for="birthDate">生年月日 <span style="color:#c62828;">（必須）</span></label>
+            <input id="birthDate" type="date" />
+          </div>
+          <div class="form-row">
+            <label for="birthPrefecture">出生地（都道府県）</label>
+            <select id="birthPrefecture"></select>
+          </div>
+          <div class="form-row">
+            <label for="currentPrefecture">現在地（都道府県）</label>
+            <select id="currentPrefecture"></select>
+          </div>
+        </div>
+        <p class="helper">入力した情報は診断計算にのみ使用し、保存しません。</p>
+      </section>
+
+      <section style="margin-top: 24px;">
+        <div class="question-header">
+          <div id="questionIndicator" class="question-index">質問 1/4</div>
+          <div style="font-size:0.9rem;color:#666;">所要時間: 約1分</div>
+        </div>
+        <div class="progress-wrapper">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div class="question-card">
+          <div id="questionText" class="question-text">読み込み中...</div>
+          <div id="options" class="option-grid"></div>
+          <div id="questionError" class="error" style="display:none;"></div>
+        </div>
+      </section>
+
+      <div style="text-align:center;margin-top: 18px;">
+        <a href="/" class="btn-primary" style="padding: 10px 22px; font-size: 1rem;">トップへ戻る</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 縁診断.</p>
+    </footer>
+  </div>
+
+  <div id="loading" class="loading-overlay"><div class="loading-box">診断中です…</div></div>
+
+  <script type="module" src="/js/diagnose.js"></script>
+</body>
+</html>
+

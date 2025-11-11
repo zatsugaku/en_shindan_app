@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(git commit:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(firebase apps:sdkconfig:*)",
+      "Bash(firebase apps:create:*)",
+      "Bash(node scripts/generate-result-pages.js:*)"
     ],
     "deny": [],
     "ask": []
