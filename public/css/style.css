@@ -63,6 +63,26 @@ body {
     box-shadow: var(--shadow);
 }
 
+.about-en {
+    margin-bottom: 40px;
+    padding: 24px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    border-left: 4px solid var(--color-primary);
+}
+
+.about-en h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+}
+
+.about-en p {
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
 .intro {
     margin-bottom: 40px;
 }
@@ -90,22 +110,20 @@ body {
 }
 
 .type-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .type-card {
+    flex: 0 1 180px;
     text-align: center;
     padding: 20px;
     border-radius: 12px;
     background: #f5f5f5;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.type-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
 }
 
 .type-card.wood { border-top: 4px solid var(--color-wood); }
@@ -180,7 +198,12 @@ footer {
         padding: 24px;
     }
 
-    .type-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .about-en {
+        padding: 20px;
+    }
+
+    .type-card {
+        flex: 0 1 calc(50% - 10px);
+        min-width: 140px;
     }
 }

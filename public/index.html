@@ -3,65 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>縁診断 - あなたの縁のタイプを知る</title>
-    <meta name="description" content="五行思想に基づいた縁診断。あなたの縁のタイプを診断して、より良い人間関係を築きましょう。">
+    <title>縁診断 - 五行思想に基づく縁診断サービス</title>
+    <meta name="description" content="五行思想に基づく縁診断サービス。無料診断で、あなたの縁のタイプを知り、より豊かな人間関係を築きましょう。">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .portal-hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .portal-title {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .portal-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 12px;
+        }
+
+        .portal-tagline {
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .service-card.featured {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border: 2px solid var(--color-primary);
+        }
+
+        .service-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .service-badge.free {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .service-badge.coming {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .service-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            color: var(--color-primary);
+        }
+
+        .service-card p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            color: #555;
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .service-card li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .service-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .about-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .about-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+
+        .about-section p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .portal-title {
+                font-size: 2.5rem;
+            }
+
+            .portal-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .service-card {
+                padding: 24px;
+            }
+
+            .about-section {
+                padding: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="hero">
-            <h1 class="title">縁診断</h1>
-            <p class="subtitle">あなたの「縁」のタイプを知り、<br>より豊かな人間関係を築きましょう</p>
+        <header class="portal-hero">
+            <h1 class="portal-title">縁診断</h1>
+            <p class="portal-subtitle" style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 0;">En-Shindan</p>
+            <p class="portal-tagline">五行思想に基づく縁診断サービス</p>
         </header>
 
         <main class="content">
-            <section class="intro">
-                <h2>五行思想に基づく縁診断</h2>
-                <p>
-                    この診断では、古来より伝わる五行思想（木・火・土・金・水）をもとに、
-                    あなたがどのような「縁」を持つタイプなのかを明らかにします。
-                </p>
-                <p>
-                    4つの質問に答えるだけで、あなたの縁のタイプと、
-                    人との関わり方の特徴がわかります。
-                </p>
-            </section>
-
-            <section class="types-preview">
-                <h3>5つの縁タイプ</h3>
-                <div class="type-grid">
-                    <div class="type-card wood">
-                        <div class="type-icon">🌱</div>
-                        <h4>木縁型</h4>
-                        <p>成長の縁</p>
-                    </div>
-                    <div class="type-card fire">
-                        <div class="type-icon">🔥</div>
-                        <h4>火縁型</h4>
-                        <p>情熱の縁</p>
-                    </div>
-                    <div class="type-card earth">
-                        <div class="type-icon">🏔️</div>
-                        <h4>土縁型</h4>
-                        <p>安定の縁</p>
-                    </div>
-                    <div class="type-card metal">
-                        <div class="type-icon">⚡</div>
-                        <h4>金縁型</h4>
-                        <p>錬磨の縁</p>
-                    </div>
-                    <div class="type-card water">
-                        <div class="type-icon">💧</div>
-                        <h4>水縁型</h4>
-                        <p>流動の縁</p>
+            <div class="services">
+                <div class="service-card featured">
+                    <span class="service-badge free">無料</span>
+                    <h2>🌸 無料縁診断</h2>
+                    <p>
+                        五行思想（木・火・土・金・水）に基づいて、あなたの縁のタイプを診断します。
+                        たった4つの質問に答えるだけで、あなたの人間関係の特徴や相性が分かります。
+                    </p>
+                    <ul>
+                        <li>所要時間: 約1分</li>
+                        <li>5つの縁タイプから判定</li>
+                        <li>相性の良いタイプがわかる</li>
+                        <li>個人情報の入力不要</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 28px;">
+                        <a href="/free/" class="btn-primary" style="font-size: 1.1rem; padding: 14px 40px;">
+                            今すぐ診断する（無料）
+                        </a>
                     </div>
                 </div>
-            </section>
 
-            <div class="cta">
-                <a href="/diagnose.html" class="btn-primary">診断を始める</a>
-                <p class="note">所要時間: 約1分</p>
+                <div class="service-card">
+                    <span class="service-badge coming">準備中</span>
+                    <h2>⭐ プレミアム縁診断</h2>
+                    <p>
+                        60分類システムによる詳細な縁診断。生年月日、名前の音韻、バイオリズム、
+                        地域エネルギーなど、多角的な分析であなたの縁を深く理解できます。
+                    </p>
+                    <ul>
+                        <li>60種類の詳細な縁タイプ</li>
+                        <li>名前の音韻分析</li>
+                        <li>バイオリズム診断</li>
+                        <li>地域エネルギー分析</li>
+                        <li>詳細なアドバイス</li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 28px;">
+                        <button class="btn-primary" disabled style="opacity: 0.6; cursor: not-allowed;">
+                            近日公開予定
+                        </button>
+                    </div>
+                </div>
             </div>
+
+            <section class="about-section">
+                <h2>縁診断とは</h2>
+                <p>
+                    「縁（えん）」とは、人と人とのつながり、出会い、関係性を意味します。
+                    古来より日本では「袖振り合うも多生の縁」と言われるように、
+                    すべての出会いには意味があると考えられてきました。
+                </p>
+                <p>
+                    <strong>縁診断</strong>では、東洋思想の叡智である五行思想を用いて、
+                    あなたがどのような縁の特性を持っているのかを明らかにし、
+                    より良い人間関係を築くヒントをお届けします。
+                </p>
+            </section>
         </main>
 
         <footer>

@@ -5,6 +5,24 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/diagnose.html",
+        "destination": "/free/diagnose.html",
+        "type": 301
+      },
+      {
+        "source": "/results/:result",
+        "destination": "/free/results/:result",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/free",
+        "destination": "/free/index.html"
+      }
     ]
   },
   "firestore": {

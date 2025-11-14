@@ -157,7 +157,7 @@ async function onAnswer(value) {
     const page = elementToPage[element];
     if (!page) throw new Error('不明な判定結果です');
 
-    window.location.href = `/results/${page}.html`;
+    window.location.href = `results/${page}.html`;
   } catch (e) {
     console.error(e);
     $error.textContent = `診断中にエラーが発生しました: ${e.message || e}`;
@@ -179,7 +179,7 @@ async function loadQuestionsFromFirestore() {
 
 async function loadQuestionsFallback() {
   // Fallback to bundled JSON (for local development or Firestore issue)
-  const res = await fetch('/firestore_data.json');
+  const res = await fetch('firestore_data.json');
   const data = await res.json();
   const qs = Object.values(data.questions || {})
     .sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -189,12 +189,9 @@ async function loadQuestionsFallback() {
 
 async function bootstrap() {
   populatePrefectures();
-  try {
-    questions = await loadQuestionsFromFirestore();
-  } catch (e) {
-    console.warn('Firestore読み込みに失敗。ローカルJSONにフォールバックします。', e);
-    questions = await loadQuestionsFallback();
-  }
+
+  // Firestore読み取りを使わず、常にローカルJSONから読み込み（コスト最適化）
+  questions = await loadQuestionsFallback();
 
   if (!questions || questions.length < 4) {
     $qText.textContent = '質問データを読み込めませんでした。時間をおいて再度お試しください。';
