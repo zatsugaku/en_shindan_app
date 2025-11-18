@@ -4,24 +4,24 @@
 const fs = require('fs');
 const path = require('path');
 
-// 診断結果のスタイル定義
+// 診断結果のスタイル定義（LPと統一）
 const styles = {
-  container: 'max-width: 800px; margin: 0 auto; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; line-height: 1.9; color: #333;',
-  header: 'text-align: center; padding: 50px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; margin-bottom: 50px; box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);',
-  title: 'font-size: 42px; margin: 0; font-weight: bold; letter-spacing: 2px;',
-  subtitle: 'font-size: 18px; margin-top: 20px; opacity: 0.95; letter-spacing: 1px;',
-  introSection: 'background: linear-gradient(to bottom, #f9f9f9 0%, #ffffff 100%); border-left: 5px solid #667eea; padding: 30px; margin: 40px 0; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);',
-  section: 'margin: 50px 0;',
-  sectionTitle: 'font-size: 28px; color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 12px; margin-bottom: 30px; font-weight: bold;',
-  subsectionBox: 'background: #fafafa; border-left: 4px solid #764ba2; padding: 25px 30px; margin: 25px 0; border-radius: 8px;',
-  subsectionTitle: 'font-size: 22px; color: #764ba2; margin: 0 0 20px 0; font-weight: bold;',
-  paragraph: 'margin: 18px 0; line-height: 2.0; font-size: 16px;',
-  listBox: 'background: #f5f5f5; padding: 20px 30px; margin: 20px 0; border-radius: 8px;',
-  list: 'margin: 10px 0; padding-left: 25px;',
-  listItem: 'margin: 12px 0; line-height: 1.9;',
-  actionBox: 'background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #2196f3; padding: 25px 30px; margin: 30px 0; border-radius: 12px; box-shadow: 0 2px 12px rgba(33, 150, 243, 0.15);',
-  footer: 'text-align: center; padding: 50px 30px; background: #f5f5f5; border-radius: 16px; margin-top: 80px;',
-  button: 'display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 48px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 12px; font-size: 16px; box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); transition: transform 0.2s;'
+  container: 'max-width: 900px; margin: 0 auto; padding: 40px 30px; font-family: "Yu Mincho", "游明朝", "YuMincho", "Hiragino Mincho ProN", "HG明朝E", "ＭＳ Ｐ明朝", serif; line-height: 2.1; color: #2d2d2d;',
+  header: 'text-align: center; padding: 80px 40px; background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%); color: white; border-radius: 0; margin-bottom: 60px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);',
+  title: 'font-size: 48px; margin: 0; font-weight: 500; letter-spacing: 6px;',
+  subtitle: 'font-size: 17px; margin-top: 25px; opacity: 0.9; letter-spacing: 2px;',
+  introSection: 'background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 50px 40px; margin: 60px 0; border-radius: 0; box-shadow: none; letter-spacing: 1px;',
+  section: 'margin: 70px 0;',
+  sectionTitle: 'font-size: 32px; color: #2d1b4e; border-bottom: 2px solid #c9a961; padding-bottom: 15px; margin-bottom: 40px; font-weight: 500; letter-spacing: 3px;',
+  subsectionBox: 'background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-left: 3px solid #c9a961; padding: 35px 40px; margin: 35px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04);',
+  subsectionTitle: 'font-size: 24px; color: #2d1b4e; margin: 0 0 25px 0; font-weight: 500; letter-spacing: 2px;',
+  paragraph: 'margin: 20px 0; line-height: 2.2; font-size: 16px; letter-spacing: 0.5px;',
+  listBox: 'background: #fafafa; padding: 25px 35px; margin: 25px 0; border-radius: 0; border-left: 2px solid #e0d5c7;',
+  list: 'margin: 15px 0; padding-left: 30px; list-style: none;',
+  listItem: 'margin: 15px 0; line-height: 2.1; letter-spacing: 0.5px; padding-left: 25px; position: relative;',
+  actionBox: 'background: linear-gradient(135deg, #fdfbf7 0%, #f8f6f1 100%); border: 1px solid #e0d5c7; padding: 35px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 4px 20px rgba(0,0,0,0.04);',
+  footer: 'text-align: center; padding: 60px 40px; background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%); border-radius: 0; margin-top: 100px; border-top: 1px solid #e0d5c7;',
+  button: 'display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 18px 55px; border-radius: 4px; text-decoration: none; font-weight: 500; margin: 15px; font-size: 16px; box-shadow: 0 6px 24px rgba(201, 169, 97, 0.35); transition: transform 0.2s; letter-spacing: 2px; border: 1px solid rgba(255, 255, 255, 0.2);'
 };
 
 // Markdownを構造化して解析
@@ -109,7 +109,7 @@ function formatContent(lines) {
         inList = true;
       }
       const listItem = line.replace(/^\d+\.\s/, '').replace(/^-\s/, '');
-      const formatted = listItem.replace(/\*\*(.+?)\*\*/g, '<strong style="color: #667eea;">$1</strong>');
+      const formatted = listItem.replace(/\*\*(.+?)\*\*/g, '<strong style="color: #555;">$1</strong>');
       html += `<li style="${styles.listItem}">${formatted}</li>`;
       continue;
     } else if (inList) {
@@ -118,7 +118,7 @@ function formatContent(lines) {
     }
 
     // 太字
-    const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong style="color: #667eea;">$1</strong>');
+    const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong style="color: #555;">$1</strong>');
 
     // 段落
     html += `<p style="${styles.paragraph}">${formatted}</p>`;
@@ -208,6 +208,14 @@ function createHtmlPage(content, title) {
     }
     a:hover {
       transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201, 169, 97, 0.45);
+    }
+    .listItem::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #c9a961;
+      font-weight: normal;
     }
   </style>
 </head>

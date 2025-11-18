@@ -286,18 +286,20 @@ function createLP() {
     </div>
 
     <div style="${styles.card}">
-      <h3 style="${styles.cardTitle}">4. 現在のバイオリズム</h3>
+      <h3 style="${styles.cardTitle}">4. 縁を活かす場所と人</h3>
       <p style="font-size: 16px; line-height: 2.0;">
-        今すべきこと、避けるべきこと、次の転換期。<br>
+        あなたと深く共鳴する場所。<br>
+        相性の良い人、避けるべき縁。<br>
         具体的にお伝えします。
       </p>
     </div>
 
     <div style="${styles.card}">
-      <h3 style="${styles.cardTitle}">5. 縁の力を最大化するヒント</h3>
+      <h3 style="${styles.cardTitle}">5. 今日から実践できること</h3>
       <p style="font-size: 16px; line-height: 2.0;">
-        日常の開運アクション、人間関係のコツ、タイミングの活かし方。<br>
-        すぐに実践できる内容です。
+        この縁を活かす実践ヒント。<br>
+        今夜から、明日から、今週中から。<br>
+        すぐに実践できる具体的なアクションをご提案します。
       </p>
     </div>
 
