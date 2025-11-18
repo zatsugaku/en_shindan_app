@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(do sed -i 's|href=\"\"/diagnose.html\"\"|href=\"\"../diagnose.html\"\"|g' \"$file\")"
+      "Bash(do sed -i 's|href=\"\"/diagnose.html\"\"|href=\"\"../diagnose.html\"\"|g' \"$file\")",
+      "Bash(npm init:*)",
+      "Bash(npx miyabi doctor)",
+      "Bash(npm install:*)",
+      "Bash(npx miyabi:*)",
+      "WebFetch(domain:k005.net)",
+      "Bash(gh run:*)",
+      "Bash(node test-connection.js:*)",
+      "Bash(node generate-article.js:*)",
+      "Bash(node post-from-markdown.js:*)",
+      "Bash(git rm:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

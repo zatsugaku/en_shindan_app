@@ -1,4 +1,60 @@
-<!DOCTYPE html>
+#!/usr/bin/env node
+// LPコンテンツをMarkdownから美しいHTMLに変換
+
+const fs = require('fs');
+const path = require('path');
+
+// スタイル定義（高級感重視版）
+const styles = {
+  // ファーストビュー
+  hero: 'background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%); color: white; padding: 120px 40px; text-align: center; position: relative; overflow: hidden;',
+  heroTitle: 'font-size: 52px; font-weight: 500; line-height: 1.5; margin-bottom: 40px; letter-spacing: 8px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;',
+  heroSubtitle: 'font-size: 20px; line-height: 2.2; margin-bottom: 50px; opacity: 0.9; letter-spacing: 2px;',
+  ctaButton: 'display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 22px 70px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 18px; box-shadow: 0 8px 30px rgba(201, 169, 97, 0.3); transition: all 0.3s; margin-top: 30px; letter-spacing: 3px; border: 1px solid rgba(255, 255, 255, 0.2);',
+  ctaNote: 'font-size: 13px; margin-top: 20px; opacity: 0.75; letter-spacing: 1px;',
+
+  // セクション共通
+  container: 'max-width: 1000px; margin: 0 auto; padding: 100px 40px;',
+  sectionTitle: 'font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;',
+
+  // コンテンツボックス
+  contentBox: 'background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 60px 50px; margin: 60px 0; line-height: 2.2; letter-spacing: 1px;',
+  highlightBox: 'background: linear-gradient(135deg, #fdfbf7 0%, #f8f6f1 100%); border: 1px solid #e0d5c7; padding: 50px; margin: 60px 0; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04);',
+
+  // カード
+  card: 'background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;',
+  cardTitle: 'font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;',
+  cardIcon: 'display: none;',
+
+  // リスト
+  checkList: 'list-style: none; padding: 0;',
+  checkItem: 'padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;',
+
+  // 体験談カード
+  testimonial: 'background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); padding: 40px; margin: 35px 0; border-radius: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.05); border-left: 3px solid #c9a961;',
+  testimonialText: 'font-size: 16px; line-height: 2.1; margin-bottom: 25px; color: #333; letter-spacing: 1px;',
+  testimonialAuthor: 'text-align: right; font-size: 13px; color: #888; letter-spacing: 1px;',
+
+  // FAQ
+  faqItem: 'background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;',
+  faqQ: 'font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;',
+  faqA: 'font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;',
+
+  // ステップ
+  step: 'background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%); padding: 40px; margin: 35px 0; border-radius: 0; border-top: 2px solid #c9a961;',
+  stepNumber: 'font-size: 15px; color: #c9a961; font-weight: 500; margin-bottom: 15px; letter-spacing: 2px;',
+  stepTitle: 'font-size: 23px; font-weight: 500; color: #333; margin-bottom: 20px; letter-spacing: 1px;',
+
+  // 最終CTA
+  finalCta: 'background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%); color: white; padding: 100px 50px; text-align: center; margin-top: 120px; border-radius: 0;',
+  finalCtaTitle: 'font-size: 44px; font-weight: 500; margin-bottom: 40px; line-height: 1.7; letter-spacing: 6px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;',
+  finalCtaText: 'font-size: 17px; line-height: 2.3; margin-bottom: 60px; opacity: 0.9; letter-spacing: 1px;',
+  finalCtaButton: 'display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 25px 90px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 20px; box-shadow: 0 10px 40px rgba(201, 169, 97, 0.4); letter-spacing: 3px; border: 1px solid rgba(255, 255, 255, 0.2);'
+};
+
+// HTMLテンプレート生成
+function createLP() {
+  return `<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -44,11 +100,11 @@
 <body>
 
   <!-- ファーストビュー -->
-  <section style="background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%); color: white; padding: 120px 40px; text-align: center; position: relative; overflow: hidden;">
-    <h1 style="font-size: 52px; font-weight: 500; line-height: 1.5; margin-bottom: 40px; letter-spacing: 8px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.hero}">
+    <h1 style="${styles.heroTitle}">
       あなたの「縁」を<br>知っていますか？
     </h1>
-    <p style="font-size: 20px; line-height: 2.2; margin-bottom: 50px; opacity: 0.9; letter-spacing: 2px;">
+    <p style="${styles.heroSubtitle}">
       生まれた日、名前、そして今この瞬間——<br>
       すべてが織りなす、あなただけの縁のかたち。<br><br>
       <strong>3分で分かる、あなたの本質。</strong>
@@ -60,19 +116,19 @@
     <p style="font-size: 16px; margin-bottom: 40px; opacity: 0.9;">
       完全無料・登録不要
     </p>
-    <a href="/free" style="display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 22px 70px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 18px; box-shadow: 0 8px 30px rgba(201, 169, 97, 0.3); transition: all 0.3s; margin-top: 30px; letter-spacing: 3px; border: 1px solid rgba(255, 255, 255, 0.2);" class="cta-button">
+    <a href="/free" style="${styles.ctaButton}" class="cta-button">
       無料診断を始める
     </a>
-    <p style="font-size: 13px; margin-top: 20px; opacity: 0.75; letter-spacing: 1px;">※所要時間：約3分</p>
+    <p style="${styles.ctaNote}">※所要時間：約3分</p>
   </section>
 
   <!-- セクション1: 縁とは何か -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       「縁」——それは、あなたの人生を形作る<br>見えない力
     </h2>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 60px 50px; margin: 60px 0; line-height: 2.2; letter-spacing: 1px;">
+    <div style="${styles.contentBox}">
       <p style="font-size: 18px; line-height: 2.0;">
         縁とは、単なる「運」や「偶然」ではありません。<br><br>
 
@@ -97,14 +153,14 @@
       あなたは、こんな経験がありませんか？
     </p>
 
-    <ul style="list-style: none; padding: 0;">
-      <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">なぜか惹かれる場所がある</li>
-      <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">一緒にいると落ち着く人がいる</li>
-      <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">同じような選択を繰り返している</li>
-      <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">直感で「これだ」と思うことがある</li>
+    <ul style="${styles.checkList}">
+      <li style="${styles.checkItem}">なぜか惹かれる場所がある</li>
+      <li style="${styles.checkItem}">一緒にいると落ち着く人がいる</li>
+      <li style="${styles.checkItem}">同じような選択を繰り返している</li>
+      <li style="${styles.checkItem}">直感で「これだ」と思うことがある</li>
     </ul>
 
-    <div style="background: linear-gradient(135deg, #fdfbf7 0%, #f8f6f1 100%); border: 1px solid #e0d5c7; padding: 50px; margin: 60px 0; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+    <div style="${styles.highlightBox}">
       <p style="font-size: 24px; font-weight: bold; color: #667eea; margin-bottom: 20px;">
         縁を知ることは、占いではありません。
       </p>
@@ -116,7 +172,7 @@
       </p>
     </div>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 60px 50px; margin: 60px 0; line-height: 2.2; letter-spacing: 1px;">
+    <div style="${styles.contentBox}">
       <h4 style="font-size: 24px; color: #667eea; text-align: center; margin-bottom: 30px; font-weight: bold;">
         知る → 活かす → 開運する
       </h4>
@@ -128,11 +184,11 @@
 
       <p style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">【縁を活かすとは】</p>
 
-      <ul style="list-style: none; padding: 0;">
-        <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">自分の縁に合う場所を訪れる</li>
-        <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">自分の縁に合う人と時間を過ごす</li>
-        <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">自分の縁に合う行動を選ぶ</li>
-        <li style="padding: 15px 0; padding-left: 30px; position: relative; font-size: 17px; line-height: 2.0; letter-spacing: 1px;">自分の縁に合うタイミングで動く</li>
+      <ul style="${styles.checkList}">
+        <li style="${styles.checkItem}">自分の縁に合う場所を訪れる</li>
+        <li style="${styles.checkItem}">自分の縁に合う人と時間を過ごす</li>
+        <li style="${styles.checkItem}">自分の縁に合う行動を選ぶ</li>
+        <li style="${styles.checkItem}">自分の縁に合うタイミングで動く</li>
       </ul>
 
       <p style="font-size: 18px; line-height: 2.0; margin-top: 30px;">
@@ -150,12 +206,12 @@
   <hr class="divider">
 
   <!-- セクション2: 60種類の縁 -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       3,600年の智慧が解き明かす<br>60種類の縁のかたち
     </h2>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 60px 50px; margin: 60px 0; line-height: 2.2; letter-spacing: 1px;">
+    <div style="${styles.contentBox}">
       <p style="font-size: 18px; line-height: 2.0; margin-bottom: 30px;">
         当診断システムでは、あなたの縁を<br>
         <strong style="font-size: 24px; color: #667eea;">60種類のプロファイル</strong>に分類します。
@@ -191,7 +247,7 @@
     </div>
 
     <div style="text-align: center; margin: 60px 0;">
-      <a href="/free" style="display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 22px 70px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 18px; box-shadow: 0 8px 30px rgba(201, 169, 97, 0.3); transition: all 0.3s; margin-top: 30px; letter-spacing: 3px; border: 1px solid rgba(255, 255, 255, 0.2);" class="cta-button">
+      <a href="/free" style="${styles.ctaButton}" class="cta-button">
         あなたの縁を今すぐ診断
       </a>
     </div>
@@ -200,52 +256,52 @@
   <hr class="divider">
 
   <!-- セクション3: 診断でわかること -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       たった3分で、<br>あなたの人生が変わる気づきを
     </h2>
 
-    <div style="background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;">
-      <h3 style="font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;">1. あなたの縁プロファイル</h3>
+    <div style="${styles.card}">
+      <h3 style="${styles.cardTitle}">1. あなたの縁プロファイル</h3>
       <p style="font-size: 16px; line-height: 2.0;">
         あなたは60種類のどれ？<br>
         生まれ持った縁の本質を、800-1,000字の詳細分析で深く理解できます。
       </p>
     </div>
 
-    <div style="background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;">
-      <h3 style="font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;">2. 名前の縁</h3>
+    <div style="${styles.card}">
+      <h3 style="${styles.cardTitle}">2. 名前の縁</h3>
       <p style="font-size: 16px; line-height: 2.0;">
         名前の響きが持つ力。<br>
         あなたの名前がどんな縁を引き寄せるのか、詳しく解説します。
       </p>
     </div>
 
-    <div style="background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;">
-      <h3 style="font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;">3. 引き寄せてきた縁のパターン</h3>
+    <div style="${styles.card}">
+      <h3 style="${styles.cardTitle}">3. 引き寄せてきた縁のパターン</h3>
       <p style="font-size: 16px; line-height: 2.0;">
         無意識に選んできたパターン。<br>
         それらには、すべて理由があります。
       </p>
     </div>
 
-    <div style="background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;">
-      <h3 style="font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;">4. 現在のバイオリズム</h3>
+    <div style="${styles.card}">
+      <h3 style="${styles.cardTitle}">4. 現在のバイオリズム</h3>
       <p style="font-size: 16px; line-height: 2.0;">
         今すべきこと、避けるべきこと、次の転換期。<br>
         具体的にお伝えします。
       </p>
     </div>
 
-    <div style="background: white; padding: 45px 40px; margin: 40px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border-top: 2px solid #c9a961;">
-      <h3 style="font-size: 24px; color: #2d1b4e; margin-bottom: 25px; font-weight: 500; letter-spacing: 2px;">5. 縁の力を最大化するヒント</h3>
+    <div style="${styles.card}">
+      <h3 style="${styles.cardTitle}">5. 縁の力を最大化するヒント</h3>
       <p style="font-size: 16px; line-height: 2.0;">
         日常の開運アクション、人間関係のコツ、タイミングの活かし方。<br>
         すぐに実践できる内容です。
       </p>
     </div>
 
-    <div style="background: linear-gradient(135deg, #fdfbf7 0%, #f8f6f1 100%); border: 1px solid #e0d5c7; padding: 50px; margin: 60px 0; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+    <div style="${styles.highlightBox}">
       <p style="font-size: 28px; font-weight: 500; color: #2d1b4e; margin-bottom: 25px; letter-spacing: 2px;">
         合計：約3,000字以上の詳細分析
       </p>
@@ -259,12 +315,12 @@
   <hr class="divider">
 
   <!-- セクション4: 信頼性 -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       なぜ、この診断は<br>「当たる」のか
     </h2>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); border-top: 1px solid #e0d5c7; border-bottom: 1px solid #e0d5c7; padding: 60px 50px; margin: 60px 0; line-height: 2.2; letter-spacing: 1px;">
+    <div style="${styles.contentBox}">
       <p style="font-size: 18px; line-height: 2.0; margin-bottom: 30px; text-align: center;">
         当診断システムは、以下の伝統的理論を統合した<br>
         <strong style="font-size: 20px; color: #667eea;">世界初のシステム</strong>です。
@@ -307,48 +363,48 @@
   <hr class="divider">
 
   <!-- セクション5: 利用者の声 -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       診断を受けた方の声
     </h2>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); padding: 40px; margin: 35px 0; border-radius: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.05); border-left: 3px solid #c9a961;">
-      <p style="font-size: 16px; line-height: 2.1; margin-bottom: 25px; color: #333; letter-spacing: 1px;">
+    <div style="${styles.testimonial}">
+      <p style="${styles.testimonialText}">
         「自分のことが腑に落ちました」<br><br>
 
         なんとなく選んできた仕事、なんとなく惹かれる場所...<br>
         すべてに理由があったと分かり、自分の人生に納得できました。<br>
         これからは、迷わず進めそうです。
       </p>
-      <p style="text-align: right; font-size: 13px; color: #888; letter-spacing: 1px;">
+      <p style="${styles.testimonialAuthor}">
         （32歳・女性・東京都）<br>
         タイプ：木の春霞
       </p>
     </div>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); padding: 40px; margin: 35px 0; border-radius: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.05); border-left: 3px solid #c9a961;">
-      <p style="font-size: 16px; line-height: 2.1; margin-bottom: 25px; color: #333; letter-spacing: 1px;">
+    <div style="${styles.testimonial}">
+      <p style="${styles.testimonialText}">
         「驚くほど当たっていて鳥肌」<br><br>
 
         特に「名前の縁」の部分。<br>
         確かに、そういう人ばかり周りにいる...！<br>
         無意識の選択が、全部説明されている感覚でした。
       </p>
-      <p style="text-align: right; font-size: 13px; color: #888; letter-spacing: 1px;">
+      <p style="${styles.testimonialAuthor}">
         （28歳・男性・大阪府）<br>
         タイプ：火の夕陽
       </p>
     </div>
 
-    <div style="background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%); padding: 40px; margin: 35px 0; border-radius: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.05); border-left: 3px solid #c9a961;">
-      <p style="font-size: 16px; line-height: 2.1; margin-bottom: 25px; color: #333; letter-spacing: 1px;">
+    <div style="${styles.testimonial}">
+      <p style="${styles.testimonialText}">
         「無料とは思えないボリューム」<br><br>
 
         3,000字以上の詳細な分析。<br>
         一般的な診断の何倍もの情報量。<br>
         しかも完全無料。ありがたいです。
       </p>
-      <p style="text-align: right; font-size: 13px; color: #888; letter-spacing: 1px;">
+      <p style="${styles.testimonialAuthor}">
         （36歳・男性・愛知県）<br>
         タイプ：水の朧月
       </p>
@@ -358,46 +414,46 @@
   <hr class="divider">
 
   <!-- セクション6: FAQ -->
-  <section style="max-width: 1000px; margin: 0 auto; padding: 100px 40px;">
-    <h2 style="font-size: 38px; text-align: center; margin-bottom: 70px; color: #2d1b4e; font-weight: 500; line-height: 1.8; letter-spacing: 4px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.container}">
+    <h2 style="${styles.sectionTitle}">
       よくあるご質問
     </h2>
 
-    <div style="background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;">
-      <p style="font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;">Q: 本当に無料ですか？</p>
-      <p style="font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;">
+    <div style="${styles.faqItem}">
+      <p style="${styles.faqQ}">Q: 本当に無料ですか？</p>
+      <p style="${styles.faqA}">
         A: はい、完全無料です。<br>
         登録も、クレジットカード情報も一切不要。気軽にお試しください。
       </p>
     </div>
 
-    <div style="background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;">
-      <p style="font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;">Q: 所要時間はどのくらい？</p>
-      <p style="font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;">
+    <div style="${styles.faqItem}">
+      <p style="${styles.faqQ}">Q: 所要時間はどのくらい？</p>
+      <p style="${styles.faqA}">
         A: 約3分です。<br>
         生年月日、名前、出生地の入力だけで、詳細な診断結果が得られます。
       </p>
     </div>
 
-    <div style="background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;">
-      <p style="font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;">Q: 結果はすぐ分かりますか？</p>
-      <p style="font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;">
+    <div style="${styles.faqItem}">
+      <p style="${styles.faqQ}">Q: 結果はすぐ分かりますか？</p>
+      <p style="${styles.faqA}">
         A: はい、入力後すぐに表示されます。待ち時間はありません。
       </p>
     </div>
 
-    <div style="background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;">
-      <p style="font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;">Q: 個人情報は安全ですか？</p>
-      <p style="font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;">
+    <div style="${styles.faqItem}">
+      <p style="${styles.faqQ}">Q: 個人情報は安全ですか？</p>
+      <p style="${styles.faqA}">
         A: 入力された情報は、診断結果の表示のみに使用され、<br>
         データベースに保存されることはありません。<br>
         完全なプライバシー保護を保証します。
       </p>
     </div>
 
-    <div style="background: white; padding: 35px 40px; margin: 30px 0; border-radius: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.04); border-left: 2px solid #e0d5c7;">
-      <p style="font-size: 19px; font-weight: 500; color: #2d1b4e; margin-bottom: 20px; letter-spacing: 1px;">Q: 何度も診断できますか？</p>
-      <p style="font-size: 16px; line-height: 2.1; color: #333; letter-spacing: 0.5px;">
+    <div style="${styles.faqItem}">
+      <p style="${styles.faqQ}">Q: 何度も診断できますか？</p>
+      <p style="${styles.faqA}">
         A: はい、何度でも無料で診断できます。<br>
         ご家族やパートナーの診断もぜひお試しください。
       </p>
@@ -405,12 +461,12 @@
   </section>
 
   <!-- 最終CTA -->
-  <section style="background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%); color: white; padding: 100px 50px; text-align: center; margin-top: 120px; border-radius: 0;">
-    <h2 style="font-size: 44px; font-weight: 500; margin-bottom: 40px; line-height: 1.7; letter-spacing: 6px; font-family: "Yu Mincho", "游明朝", "YuMincho", serif;">
+  <section style="${styles.finalCta}">
+    <h2 style="${styles.finalCtaTitle}">
       あなたの縁を、<br>今すぐ知りましょう
     </h2>
 
-    <p style="font-size: 17px; line-height: 2.3; margin-bottom: 60px; opacity: 0.9; letter-spacing: 1px;">
+    <p style="${styles.finalCtaText}">
       人生は、選択の連続です。<br><br>
 
       でも、自分の縁を知らないまま選ぶのと、<br>
@@ -425,7 +481,7 @@
       人生を開く第一歩を。</strong>
     </p>
 
-    <a href="/free" style="display: inline-block; background: linear-gradient(135deg, #c9a961 0%, #a08445 100%); color: white; padding: 25px 90px; border-radius: 4px; text-decoration: none; font-weight: 500; font-size: 20px; box-shadow: 0 10px 40px rgba(201, 169, 97, 0.4); letter-spacing: 3px; border: 1px solid rgba(255, 255, 255, 0.2);" class="cta-button">
+    <a href="/free" style="${styles.finalCtaButton}" class="cta-button">
       今すぐ無料診断を始める
     </a>
 
@@ -443,4 +499,24 @@
   </footer>
 
 </body>
-</html>
+</html>`;
+}
+
+// メイン処理
+function main() {
+  const outputPath = path.join(__dirname, '..', 'public', 'index.html');
+
+  console.log('🎨 LPを生成しています...\n');
+
+  const html = createLP();
+  fs.writeFileSync(outputPath, html);
+
+  console.log('✅ LP生成完了！\n');
+  console.log(`ファイル: ${outputPath}`);
+  console.log('\nブラウザで確認してください：');
+  console.log('http://localhost:5000/ (Firebase emulator)');
+  console.log('または');
+  console.log('file://' + outputPath);
+}
+
+main();
