@@ -1,9 +1,8 @@
-// Firebase SDK v9 (modular) + Diagnose flow
-// Project ID: en-shindan-app
-// API endpoint: https://asia-northeast1-en-shindan-app.cloudfunctions.net/getDiagnosis
+// 縁診断フォームロジック（Pattern C: ハイブリッド方式）
+// Version: 2.0.0 - 新60分類システム対応
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBGgpKjuUmrtf7TJasw4RcsMEzMGfMl42A',
@@ -16,17 +15,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-const API_ENDPOINT = 'https://asia-northeast1-en-shindan-app.cloudfunctions.net/getDiagnosis';
-
-// 五行 → 結果ページのマッピング
-const elementToPage = {
-  '木': 'wood_type',
-  '火': 'fire_type',
-  '土': 'earth_type',
-  '金': 'metal_type',
-  '水': 'water_type'
-};
 
 // UI Elements
 const $indicator = document.getElementById('questionIndicator');
@@ -60,7 +48,7 @@ function populatePrefectures() {
       const opt = document.createElement('option');
       opt.value = p === '未選択' ? '' : p;
       opt.textContent = p;
-      if (i === 0) opt.disabled = true; // プレースホルダ
+      if (i === 0) opt.disabled = true;
       el.appendChild(opt);
     });
   };
@@ -105,12 +93,6 @@ function renderQuestion() {
   setProgress(idx);
 }
 
-function dominantFromLocal() {
-  const c = { '木':0,'火':0,'土':0,'金':0,'水':0 };
-  answers.forEach(a => { if (c[a] !== undefined) c[a]++; });
-  return Object.entries(c).sort(([,a],[,b]) => b-a)[0][0];
-}
-
 async function onAnswer(value) {
   answers[idx] = value;
   idx++;
@@ -119,9 +101,9 @@ async function onAnswer(value) {
     return;
   }
 
-  // All answered → call API
+  // All answered → process diagnosis
   try {
-    // Validate required birthDate for API
+    // Validate required fields
     if (!$birthDate.value) {
       $error.textContent = '生年月日を入力してください。';
       $error.style.display = 'block';
@@ -129,56 +111,76 @@ async function onAnswer(value) {
       return;
     }
 
-    $loading.style.display = 'flex';
-
-    const payload = {
-      birthDate: $birthDate.value,
-      firstName: $firstName.value || '',
-      lastName: $lastName.value || '',
-      birthPrefecture: $birthPref.value || '',
-      currentPrefecture: $currentPref.value || '',
-      question1: answers[0],
-      question2: answers[1],
-      question3: answers[2],
-      question4: answers[3]
-    };
-
-    const res = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (!json.success) {
-      throw new Error(json.error || '診断APIエラー');
+    if (!$firstName.value || !/^[A-Za-z]+$/.test($firstName.value)) {
+      $error.textContent = '名前をローマ字（半角英字）で入力してください。';
+      $error.style.display = 'block';
+      idx = 3;
+      return;
     }
 
-    const element = json.data?.userProfile?.dominantElement || dominantFromLocal();
-    const page = elementToPage[element];
-    if (!page) throw new Error('不明な判定結果です');
+    if (!$lastName.value || !/^[A-Za-z]+$/.test($lastName.value)) {
+      $error.textContent = '苗字をローマ字（半角英字）で入力してください。';
+      $error.style.display = 'block';
+      idx = 3;
+      return;
+    }
 
-    window.location.href = `results/${page}.html`;
+    if (!$birthPref.value) {
+      $error.textContent = '出生地（都道府県）を選択してください。';
+      $error.style.display = 'block';
+      idx = 3;
+      return;
+    }
+
+    if (!$currentPref.value) {
+      $error.textContent = '現在地（都道府県）を選択してください。';
+      $error.style.display = 'block';
+      idx = 3;
+      return;
+    }
+
+    $loading.style.display = 'flex';
+
+    // フロントエンドで診断計算を実行
+    const formData = {
+      birthDate: $birthDate.value,
+      firstName: $firstName.value,
+      lastName: $lastName.value,
+      birthRegion: $birthPref.value,
+      currentRegion: $currentPref.value,
+      workPattern: answers[0],
+      relationshipStyle: answers[1],
+      stressHandling: answers[2],
+      lifestylePreference: answers[3]
+    };
+
+    // diagnosis-logic.js の processDiagnosis を使用
+    const diagnosisResult = window.DiagnosisLogic.processDiagnosis(formData);
+
+    if (!diagnosisResult.success) {
+      throw new Error(diagnosisResult.error || '診断計算エラー');
+    }
+
+    const data = diagnosisResult.data;
+
+    // 結果ページへリダイレクト（Phase 1: トークンなしでも表示）
+    const resultPath = `../results/${data.folder}/${data.fileName}.html`;
+
+    // TODO Phase 2: Firebase Functionsでトークン生成 + Firestore記録
+    // TODO Phase 3: トークンをURLパラメータに追加
+
+    window.location.href = resultPath;
+
   } catch (e) {
     console.error(e);
     $error.textContent = `診断中にエラーが発生しました: ${e.message || e}`;
     $error.style.display = 'block';
     $loading.style.display = 'none';
+    idx = 3;
   }
 }
 
-async function loadQuestionsFromFirestore() {
-  const qRef = collection(db, 'questions');
-  const qSnap = await getDocs(query(qRef, orderBy('order','asc')));
-  const list = [];
-  qSnap.forEach((doc) => list.push(doc.data()));
-  // Ensure 4 items in order
-  return list
-    .sort((a, b) => (a.order || 0) - (b.order || 0))
-    .slice(0, 4);
-}
-
 async function loadQuestionsFallback() {
-  // Fallback to bundled JSON (for local development or Firestore issue)
   const res = await fetch('firestore_data.json');
   const data = await res.json();
   const qs = Object.values(data.questions || {})
@@ -190,7 +192,7 @@ async function loadQuestionsFallback() {
 async function bootstrap() {
   populatePrefectures();
 
-  // Firestore読み取りを使わず、常にローカルJSONから読み込み（コスト最適化）
+  // ローカルJSONから質問データを読み込み
   questions = await loadQuestionsFallback();
 
   if (!questions || questions.length < 4) {
@@ -204,4 +206,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
