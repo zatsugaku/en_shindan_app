@@ -20,13 +20,29 @@ const POSITION_MAPPING = {
   "霜夜": 9, "氷刃": 10, "春雷": 11, "豊穣": 12
 };
 
-// フォルダマッピング（01_火、02_木、03_土、04_金、05_水）
+// 自然現象の英語ファイル名マッピング
+const PHENOMENA_EN_MAP = {
+  "春霞": "harugasumi",
+  "夏雨": "natsuame",
+  "彩雲": "saiun",
+  "朝日": "asahi",
+  "夕陽": "yuhi",
+  "秋風": "akikaze",
+  "冬陽": "fuyuhi",
+  "朧月": "oborozuki",
+  "霜夜": "shimoya",
+  "氷刃": "hyojin",
+  "春雷": "shunrai",
+  "豊穣": "houjo"
+};
+
+// フォルダマッピング（英語ディレクトリ名）
 const FOLDER_MAP = {
-  "木": "02_木",
-  "火": "01_火",
-  "土": "03_土",
-  "金": "04_金",
-  "水": "05_水"
+  "木": "wood",
+  "火": "fire",
+  "土": "earth",
+  "金": "metal",
+  "水": "water"
 };
 
 // 都道府県の五行マッピング
@@ -74,9 +90,11 @@ function calculateNaturalType(birthDate) {
   // 60分類名を生成
   const naturalType = `${element}の${phenomena}`;
 
-  // フォルダとファイル名を生成
+  // フォルダとファイル名を生成（英語形式）
   const folder = FOLDER_MAP[element];
-  const fileName = naturalType;
+  const elementEn = FOLDER_MAP[element]; // "fire", "wood", etc.
+  const phenomenaEn = PHENOMENA_EN_MAP[phenomena]; // "natsuame", "harugasumi", etc.
+  const fileName = `${elementEn}-${phenomenaEn}`; // "fire-natsuame"
 
   return {
     naturalType,      // "火の朧月" 等
