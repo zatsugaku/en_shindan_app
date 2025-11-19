@@ -141,6 +141,9 @@ async function onAnswer(value) {
 
     $loading.style.display = 'flex';
 
+    // reCAPTCHA v3トークン取得
+    const recaptchaToken = await grecaptcha.execute('6LcZZBEsAAAAAOVnxuUgNRUjNzsHxaXKLyxvFIpH', { action: 'diagnosis' });
+
     // フロントエンドで診断計算を実行
     const formData = {
       birthDate: $birthDate.value,
@@ -163,11 +166,33 @@ async function onAnswer(value) {
 
     const data = diagnosisResult.data;
 
-    // 結果ページへリダイレクト（Phase 1: トークンなしでも表示）
-    const resultPath = `../results/${data.folder}/${data.fileName}.html`;
+    // Firebase Functionsでトークン生成 + Firestore記録
+    const tokenResponse = await fetch('https://asia-northeast1-en-shindan-app.cloudfunctions.net/generateDiagnosisToken', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        recaptchaToken,
+        diagnosisData: {
+          naturalType: data.naturalType,
+          element: data.element,
+          phenomena: data.phenomena,
+          nameType: data.nameType,
+          attractionType: data.attractionType,
+          birthRegion: data.birthRegion,
+          currentRegion: data.currentRegion
+        }
+      })
+    });
 
-    // TODO Phase 2: Firebase Functionsでトークン生成 + Firestore記録
-    // TODO Phase 3: トークンをURLパラメータに追加
+    if (!tokenResponse.ok) {
+      throw new Error('トークン生成に失敗しました');
+    }
+
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.token;
+
+    // 結果ページへリダイレクト（トークン付き）
+    const resultPath = `../results/${data.folder}/${data.fileName}.html?token=${accessToken}`;
 
     window.location.href = resultPath;
 
