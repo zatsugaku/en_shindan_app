@@ -298,6 +298,14 @@
         <h2 class="section-title">基本情報</h2>
         <div class="form-grid">
           <div class="form-row">
+            <label for="nameKanji">お名前<span class="required">*</span></label>
+            <input id="nameKanji" type="text" placeholder="山田 太郎" required />
+          </div>
+          <div class="form-row">
+            <label for="email">メールアドレス<span class="required">*</span></label>
+            <input id="email" type="email" placeholder="example@gmail.com" required />
+          </div>
+          <div class="form-row">
             <label for="lastName">苗字（ローマ字）<span class="required">*</span></label>
             <input id="lastName" type="text" placeholder="Yamada" pattern="[A-Za-z]+" required />
           </div>
@@ -319,8 +327,8 @@
           </div>
         </div>
         <p class="helper">
-          名前はローマ字（アルファベット）で入力してください。音韻分析に使用します。<br>
-          入力した情報は診断計算にのみ使用し、保存しません。
+          診断結果は24時間以内に、ご入力いただいたメールアドレスにお送りいたします。<br>
+          名前はローマ字（アルファベット）でも入力してください。音韻分析に使用します。
         </p>
       </section>
 
@@ -352,6 +360,6 @@
   </div>
 
   <script src="../js/diagnosis-logic.js"></script>
-  <script type="module" src="js/diagnose.js"></script>
+  <script src="js/diagnose-v3.js"></script>
 </body>
 </html>

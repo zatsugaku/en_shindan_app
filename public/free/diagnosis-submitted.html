@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>診断申し込み完了 - 縁診断</title>
+  <meta name="description" content="診断申し込みが完了しました。24時間以内に診断結果をメールでお送りいたします。" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Yu Mincho", "游明朝", "YuMincho", "Hiragino Mincho ProN", "HG明朝E", "ＭＳ Ｐ明朝", serif;
+      line-height: 2.0;
+      color: #2d2d2d;
+      background: linear-gradient(to bottom, #fafafa 0%, #ffffff 50%, #fafafa 100%);
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+      margin-bottom: 60px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .title {
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: 6px;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      opacity: 0.9;
+      letter-spacing: 2px;
+    }
+
+    .success-section {
+      background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+      border-left: 3px solid #c9a961;
+      padding: 60px 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 80px;
+      color: #c9a961;
+      margin-bottom: 30px;
+    }
+
+    .success-title {
+      font-size: 28px;
+      color: #2d1b4e;
+      margin-bottom: 30px;
+      letter-spacing: 3px;
+    }
+
+    .success-message {
+      font-size: 18px;
+      line-height: 2.2;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    .info-box {
+      background: #f9f9f9;
+      border: 1px solid #e0d5c7;
+      padding: 30px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .info-box h3 {
+      font-size: 20px;
+      color: #2d1b4e;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .info-box p {
+      font-size: 16px;
+      line-height: 2.0;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .info-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .info-box li {
+      font-size: 16px;
+      line-height: 2.0;
+      margin-bottom: 10px;
+      padding-left: 20px;
+      position: relative;
+      letter-spacing: 0.5px;
+    }
+
+    .info-box li:before {
+      content: "・";
+      position: absolute;
+      left: 0;
+      color: #c9a961;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      color: #2d1b4e;
+      text-decoration: none;
+      font-size: 16px;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #c9a961;
+      padding-bottom: 2px;
+      transition: all 0.3s;
+    }
+
+    .back-link a:hover {
+      color: #c9a961;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+      font-size: 14px;
+      margin-top: 80px;
+      border-top: 1px solid #e0d5c7;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .title {
+        font-size: 28px;
+        letter-spacing: 4px;
+      }
+
+      .hero {
+        padding: 40px 20px;
+      }
+
+      .success-section {
+        padding: 40px 20px;
+      }
+
+      .success-icon {
+        font-size: 60px;
+      }
+
+      .success-title {
+        font-size: 24px;
+      }
+
+      .success-message {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">縁診断</h1>
+      <p class="subtitle">あなたの縁のかたちを紐解く</p>
+    </header>
+
+    <main>
+      <section class="success-section">
+        <div class="success-icon">✓</div>
+        <h2 class="success-title">診断申し込みを受け付けました</h2>
+        <p class="success-message">
+          ご入力いただきありがとうございます。<br>
+          診断結果を準備しております。
+        </p>
+
+        <div class="info-box">
+          <h3>次のステップ</h3>
+          <ul>
+            <li>診断結果は<strong>24時間以内</strong>に、ご入力いただいたメールアドレスにお送りいたします</li>
+            <li>メールが届かない場合は、迷惑メールフォルダをご確認ください</li>
+            <li>ご不明な点がございましたら、お気軽にお問い合わせください</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>メールに関する注意事項</h3>
+          <p>
+            診断結果メールは<strong>enguide.shindan@gmail.com</strong>または類似のアドレスから送信されます。
+          </p>
+          <p>
+            ドメイン指定受信を設定されている場合は、<strong>@gmail.com</strong>からのメールを受信できるようご設定ください。
+          </p>
+        </div>
+      </section>
+
+      <div class="back-link">
+        <a href="/">← トップへ戻る</a>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2025 縁診断. All rights reserved.
+    </footer>
+  </div>
+</body>
+</html>
