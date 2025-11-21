@@ -199,24 +199,15 @@ async function onAnswer(value) {
       attractionType: data.attractionType    // 「木縁型」など
     };
 
-    // Submit to Google Apps Script
-    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+    // Submit to Google Apps Script (no-cors mode)
+    await fetch(GOOGLE_APPS_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(submissionData)
     });
-
-    if (!response.ok) {
-      throw new Error('送信に失敗しました');
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error(result.error || '送信エラー');
-    }
 
     // Success - show confirmation page
     window.location.href = 'diagnosis-submitted.html';
