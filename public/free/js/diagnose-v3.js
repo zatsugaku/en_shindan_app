@@ -5,7 +5,7 @@
 
 // Google Apps Script WebアプリのURL
 // セットアップ後にここを更新してください
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfRXtkT6kBIrj9H8iHiGVcU4F3CsKw6r6knV-cC0fKphz5Bkm9v4zCTtCREWkBBJpWpw/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzw5ff-AubNaEh_q0XVDxkD2fAWPWjflA0iN5mDokPhHK5ZlAFs-VstwqyoFbyknhm8/exec';
 
 // ==================== UI Elements ====================
 
